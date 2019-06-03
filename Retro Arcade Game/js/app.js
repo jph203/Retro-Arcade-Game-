@@ -1,151 +1,148 @@
-(function(){
+// Global Variables
+let score = 0;
+let totalLives = 10;
 
-    let lives = 5;
-    let score = 0;
-    let hearts_collected = 0;
-    let crossed = 0;
-    let is_game_over = false;
-    document.getElementById('score').innerHTML = score;
-    document.getElementById('lives').innetHTML = lives;
-    document.getElementById('isgameover').innerHTML = is_game_over;
-
-}
-// Enemies our player must avoid
-let enemy = function(x, y, s) {
-    
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
-
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
-   this.sprite = 'images/enemy-bug.png';
-   this.x = x;
-   this.y = y;
-   this.speed = s;
-}; 
-
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
-enemy.prototype.update = function(dt) {
-     
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-this.x += this.speed * dt;
-    if (this.x > 707) {
-        this.x = -100;
-        var someSpeed = Math.floor(Math.random() * 4 + 1);
-        this.speed = 60 * someSpeed;
+// Enemies the player must avoid during the game
+    function Enemy(x, y, speed) {
+        this.x = x;
+        this.y = y;
+        this.speed = speed;
+        this.sprite = 'images/enemy-bug.png';
     }
-let enemyXLeftMax = this.x - 70;
-let enemyXRightMax = this.x + 70;
-let enemyYTopMax = this.y - 60;
-let enemyYBottomMax = this.y + 60;
-if(player.x > enemyXLeftMax && player.x < enemyXRightMax && player.y > enemyYTopMax && player.y < enemyYBottomMax && player.y); 
-// Draw the enemy on the screen, required method for game
-//you lose
-player.resetPosition();
-lives--;
-updateView('you died. ' + ' live(s) remaining... ');
-if(lives === 0){
-    alert('game over');
-    player.resetPosition();
-    is_game_over = true;
-    updateView('you died. ' + ' live(s) remaining...');
-}
-}
-};
 
-Enemy.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
-};
+// Update the enemy objects position and a delta between ticks
+Enemy.prototype.update = function(dt) {
+    let scoreValue = document.querySelector('.scoreValue');
+    let lives = document.querySelector('.livesValue');
+    // Multiplying any movement by the dt perameter ensures the game runs at the same speed
+    this.x += this.speed * dt;
+  
+    // Bugs move at random speeds
+    if (this.x >= 505) {
+      this.x = -20;
+      this.speed = 125 + Math.floor(Math.random() * 200 + 1);
+    }
 
+// Handles player collision detection and updates score || source https://developer.mozilla.org/en-US/docs/Games/Techniques/2D_collision_detection
+if (this.x < player.x + 65 &&
+    this.x + 78 > player.x &&
+    this.y < player.y + 40 &&
+    70 + this.y > player.y) {
+      score -= 25;
+      scoreValue.innerText = score;
+      totalLives--
+      lives.innerText = totalLives;
+      if (totalLives === 0) {
+        gameOver();
+      }
+      setTimeout(() => {
+        player.reset();
+      }, -10)
+    }
+  };
 
-Enemy.prototype.handleInput = function (dt) {};
+  // Puts enemy on the screen
+  Enemy.prototype.render = function() {
+      ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+  };
 
+// Creates a player class with a function
+    function Player(x, y,) {
+        this.x = x
+        this.y = y
+        this.sprite = 'images/char-boy.png';
+    }
 
-// Now write your own player class
-// This class requires an update(), render() and
-// a handleInput() method.
-
-const Player = function Player() {
-    this.sprite = 'images/char-boy.png';
-    this.x = 303;
-    this.y = 404;
-    this.h_step = 101;
-    this.v_step = 83;
-};
-
+// Keeps player in bounds, resets and gives score of 50 
 Player.prototype.update = function(dt) {
+    let scoreValue = document.querySelector('.scoreValue');
 
+if (this.x > 405) {
+    this.x = 405;
+}
+
+if (this.x < -2) {
+    this.x = -2;
+}
+
+if (this.y > 405) {
+    this.y = 405;
+}
+
+if (this.y < -8) {
+    this.y = -8;
+    setTimeout(() => {
+        player.reset();
+    }, 25);
+    score += 200;
+    scoreValue.innerText = score;
+  }
 };
 
-Player.prototype.resetPosition = function() {
-    this.x = 303;
-    this.y = 404;
-};
-
-Player.prototype.render = function () {
+// Puts player in the starting point
+Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-Player.prototype.handleInput = function(direction) {
-    switch (direction) {
-        case 'left':
-        this.x >= this.h_step ? this.x -= this.h_step : this.x -=0;
-        break;
-        case 'right':
-        this.x <= (this.h_step * 5) ? this.x += this.h_step : this.x += 0;
-        break;
-        case 'up':
-        this.y -= this.v_step;
-        if(this.y <= 50) {
-            score += 10;
-            crossed++;
-            updateView('you win! score: ' score);
-            window.gem = new Gem();
-            if(crossed % 5 === 0) { window.heart = new Heart(); }
-            this.resetPosition();
-        }
+  // Parameters for the (e) arrow keys
+  Player.prototype.handleInput = function(move) {
+        if (move == 'left') {
+            this.x -= 90
+        } else if (move == 'right') {
+            this.x += 90
+        } else if (move == 'up') {
+            this.y -= 90
+        } else if (move == 'down') {
+            this.y += 90
+        }  
+};  
 
-        break;
-        case 'down':
-        this.y <= (this.v_step * 4) ? this.y += this.v_step : this.y += 0;
-        break;
-    }
-}
+// Resets the player position when called
+Player.prototype.reset = function() {
+    this.x = 200;
+    this.y = 420;
+};
 
+// Creates all enemy objects into an array
+const allEnemies = [
+    new Enemy(-100, 225, 100),
+    new Enemy(-100, 60, 150), 
+    new Enemy(-100, 145, 125)
+   ];
 
-// Now instantiate your objects.
-let enemy1 = new Enemy(-80, 60 + 80 * 0, (Math.floor(Math.random() * 4 + 1) * 60));
-let enemy2 = new Enemy(-80, 60 + 80 * 1, (Math.floor(Math.random() * 4 + 1) * 60));
-let enemy3 = new Enemy(-80, 60 + 80 * 2, (Math.floor(Math.random() * 4 + 1) * 60));
+// Creates a new player
+const player = new Player(203, 405);   
 
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
-window.player = new player();
-window.gem = new Gem();
-window.heart = new Heart();
-window.selector = new Selector();
-
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// This listens to key presses to move the player
 document.addEventListener('keyup', function(e) {
-    if(is_game_over) {return; }
-    var allowedKeys = {
+    const allowedKeys = {
         37: 'left',
         38: 'up',
         39: 'right',
         40: 'down'
     };
-    if (allowedKeys[e.keyCode]) {
-        player.handleInput(allowedKeys[e.keycode]);
-    }
-}); 
 
-M.toast({html: 'you have ' + lives + ' live(s) remaining...'});
+    player.handleInput(allowedKeys[e.keyCode]);
+});
 
-window.logGame = function() {console.log(player, allEnemies); }
-
-})()
+// Game Over function is called when 0 lives are left - resets all variables
+function gameOver() {
+    const restart = document.querySelector('#clickRestart');
+    const modal = document.querySelector('.gameRestart');
+    let lives = document.querySelector('.livesValue');
+    let scoreValue = document.querySelector('.scoreValue');
+    let finalLives = document.getElementById('finalLives');
+    let finalScore = document.getElementById('finalScore');
+  
+    modal.classList.add('visible');
+    finalLives.innerText = totalLives;
+    finalScore.innerText = score;
+    restart.addEventListener('click', () => {
+      player.reset();
+      score = 0;
+      totalLives = 10;
+      scoreValue.innerText = score;
+      lives.innerText = totalLives;
+      modal.classList.remove('visible');
+    })
+  }
