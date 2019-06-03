@@ -21,6 +21,9 @@ To Play this game locally:
 This is a clone of the classic arcade game "Frogger."
 
 * You must score as many points as you can before running out of lives.
+* You receive 200 points for crossing.
+* You will lose 25 points for hitting each bug.
+* You'll start with 10 lives and good luck!
 
 Click to restart and play again.
 
