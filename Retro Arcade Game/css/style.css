@@ -1,3 +1,73 @@
 body {
     text-align: center;
+    background-color: azure;
 }
+
+.scoreContainer {
+  color: rgb(57, 42, 143);
+  font-family: "Times New Roman", Times, serif;
+  font-size: 20px;
+  max-width: 450px;
+  margin-top: 25px;
+  margin: auto;
+}
+
+.lives {
+    text-align: left;
+    float: left;
+    margin-left: 60px;
+    font-size: 30px;
+  }
+  
+  .score {
+    text-align: right;
+    float: right;
+    margin-right: 80px;
+    font-size: 30px;
+  }
+  
+  /* MODAL */
+  
+  .gameRestart {
+    font-family: "Times New Roman", Times, serif;
+    color: rgb(18, 20, 117);
+    font-weight: bold;
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+  }
+  
+  .gameRestart.visible {
+    display: flex;
+    flex-direction: column;
+    animation: modalDisplay 400ms forwards;
+  }
+  
+  @keyframes modalDisplay {
+      from {
+        background-color: rgba(133, 125, 125, 0);
+        font-size: 0;
+      }
+    
+      to {
+        font-size: 40px;
+        background-color: rgba(169, 185, 221, 0.8);
+      }
+  }
+  
+  #clickRestart {
+      color: rgb(20, 61, 40);
+      margin-top: 50px;
+      cursor: pointer;
+  }
+  
+  .modalInfo {
+      margin-top: 20px;
+  } 
+
