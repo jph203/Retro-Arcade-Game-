@@ -14,10 +14,11 @@ let totalLives = 10;
 Enemy.prototype.update = function(dt) {
     let scoreValue = document.querySelector('.scoreValue');
     let lives = document.querySelector('.livesValue');
-    // Multiplying any movement by the dt perameter ensures the game runs at the same speed
+    
+// Multiplying any movement by the dt perameter ensures the game runs at the same speed
     this.x += this.speed * dt;
   
-    // Bugs move at random speeds
+// Bugs will move at random speeds
     if (this.x >= 505) {
       this.x = -20;
       this.speed = 125 + Math.floor(Math.random() * 200 + 1);
@@ -85,7 +86,7 @@ Player.prototype.render = function() {
 };
 
   // Parameters for the (e) arrow keys
-  Player.prototype.handleInput = function(move) {
+Player.prototype.handleInput = function(move) {
         if (move == 'left') {
             this.x -= 90
         } else if (move == 'right') {
