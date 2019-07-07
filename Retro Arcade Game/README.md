@@ -25,6 +25,7 @@ This is a clone of the classic arcade game "Frogger."
 * You will lose 25 points for hitting each bug.
 * You'll start with 10 lives and good luck!
 
+
 Click to restart and play again.
 
 
